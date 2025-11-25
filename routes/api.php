@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\System\FallbackController;
 use App\Http\Controllers\Api\System\HealthController;
 use Illuminate\Http\Request;
@@ -26,17 +27,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //  API routes version 1
 Route::prefix('v1')->group(function () {
     // Add your v1 API routes here
-
-
-
     Route::get('/health', [HealthController::class, 'check']);
 
-
-    // Authenticated routes
-    Route::post('/register', []);
-    // Route::post('/login', []);
-    // Route::post('/logout', []);
-    // Route::post('/', []);
+    Route::prefix('auth')->group(function () {
+        // Authenticated routes
+        Route::post('/register', [AuthController::class, 'register']);
+        Route::post('/login', []);
+        Route::post('/logout', []);
+        Route::post('/', []);
+    });
 });
 
 
