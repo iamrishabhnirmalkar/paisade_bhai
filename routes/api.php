@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Group\SplitGroupController;
 use App\Http\Controllers\Api\System\FallbackController;
 use App\Http\Controllers\Api\System\HealthController;
 use Illuminate\Http\Request;
@@ -36,6 +37,16 @@ Route::prefix('v1')->group(function () {
             Route::post('/refresh', [AuthController::class, 'refresh_token']);
             Route::get('/me', [AuthController::class, 'me']);
         });
+    });
+
+    // Protected Group Routes
+    Route::middleware('auth:api')->prefix('groups')->group(function () {
+        Route::post('/', [SplitGroupController::class, 'create']);
+        Route::get('/', [SplitGroupController::class, 'index']);
+        Route::get('/my', [SplitGroupController::class, 'myGroups']);
+        Route::get('/{id}', [SplitGroupController::class, 'show']);
+        Route::put('/{id}', [SplitGroupController::class, 'update']);
+        Route::delete('/{id}', [SplitGroupController::class, 'destroy']);
     });
 });
 
