@@ -6,8 +6,6 @@ use App\Http\Controllers\Api\System\HealthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,25 +17,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
-//  API routes version 1
+// API routes version 1
 Route::prefix('v1')->group(function () {
-    // Add your v1 API routes here
     Route::get('/health', [HealthController::class, 'check']);
 
     Route::prefix('auth')->group(function () {
-        // Authenticated routes
+        // Public routes
         Route::post('/register', [AuthController::class, 'register']);
-        Route::post('/login', []);
-        Route::post('/logout', []);
-        Route::post('/', []);
+        Route::post('/login', [AuthController::class, 'login']);
+
+        // Protected routes
+        Route::middleware('auth:api')->group(function () {
+            Route::post('/logout', [AuthController::class, 'logout']);
+            Route::post('/refresh', [AuthController::class, 'refresh_token']);
+            Route::get('/me', [AuthController::class, 'me']);
+        });
     });
 });
-
 
 // Handle Method Not Allowed (405) for existing routes with wrong methods
 Route::any('{any}', [FallbackController::class, 'methodNotAllowed'])
