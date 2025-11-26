@@ -14,16 +14,4 @@ class SplitGroup extends Model
         'description',
         'created_by',
     ];
-
-    public function creator()
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-
-    public function members()
-    {
-        return $this->belongsToMany(User::class, 'group_members', 'group_id', 'user_id')
-            ->withPivot('joined_at')
-            ->withTimestamps();
-    }
 }

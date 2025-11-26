@@ -43,19 +43,15 @@ class SplitGroupController extends Controller
     }
 
     /**
-     * Get all groups for authenticated user
+     * Get all groups for authenticated user (SIMPLE - no relationships)
      */
     public function index(Request $request): JsonResponse
     {
         try {
             $user = Auth::user();
 
-            // Get groups created by user or where user is a member
+            // Simple: Get only groups created by this user
             $groups = SplitGroup::where('created_by', $user->id)
-                ->orWhereHas('members', function ($query) use ($user) {
-                    $query->where('user_id', $user->id);
-                })
-                ->with('creator') // Load creator info
                 ->latest()
                 ->get();
 
@@ -69,7 +65,7 @@ class SplitGroupController extends Controller
     }
 
     /**
-     * Get single group details
+     * Get single group details (SIMPLE - no relationships)
      */
     public function show(Request $request, $id): JsonResponse
     {
@@ -77,14 +73,14 @@ class SplitGroupController extends Controller
             $user = Auth::user();
 
             // Find the group
-            $group = SplitGroup::with('creator')->find($id);
+            $group = SplitGroup::find($id);
 
             if (!$group) {
                 return $this->errorResponse('Group not found', 404);
             }
 
-            // Check if user has access to this group
-            if ($group->created_by !== $user->id && !$group->members->contains($user->id)) {
+            // Simple: Check if user created this group
+            if ($group->created_by !== $user->id) {
                 return $this->errorResponse('You do not have access to this group', 403);
             }
 
@@ -164,7 +160,7 @@ class SplitGroupController extends Controller
     }
 
     /**
-     * Get groups created by authenticated user
+     * Get groups created by authenticated user (SIMPLE - same as index)
      */
     public function myGroups(Request $request): JsonResponse
     {
@@ -172,7 +168,6 @@ class SplitGroupController extends Controller
             $user = Auth::user();
 
             $groups = SplitGroup::where('created_by', $user->id)
-                ->with('creator')
                 ->latest()
                 ->get();
 
