@@ -52,4 +52,14 @@ class User extends AuthenticatableUser implements JWTSubject
     {
         return [];
     }
+
+    /**
+     * Groups where user is a member
+     */
+    public function memberGroups()
+    {
+        return $this->belongsToMany(SplitGroup::class, 'group_members', 'user_id', 'group_id')
+            ->withPivot('joined_at')
+            ->withTimestamps();
+    }
 }

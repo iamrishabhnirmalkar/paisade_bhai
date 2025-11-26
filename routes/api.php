@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Bill\BillController;
 use App\Http\Controllers\Api\Group\SplitGroupController;
 use App\Http\Controllers\Api\System\FallbackController;
 use App\Http\Controllers\Api\System\HealthController;
@@ -41,12 +42,36 @@ Route::prefix('v1')->group(function () {
 
     // Protected Group Routes
     Route::middleware('auth:api')->prefix('groups')->group(function () {
+        // Group CRUD
         Route::post('/', [SplitGroupController::class, 'create']);
         Route::get('/', [SplitGroupController::class, 'index']);
         Route::get('/my', [SplitGroupController::class, 'myGroups']);
         Route::get('/{id}', [SplitGroupController::class, 'show']);
         Route::put('/{id}', [SplitGroupController::class, 'update']);
         Route::delete('/{id}', [SplitGroupController::class, 'destroy']);
+
+        // Member management
+        Route::post('/{groupId}/members', [SplitGroupController::class, 'addMember']);
+        Route::get('/{groupId}/members', [SplitGroupController::class, 'getMembers']);
+        Route::delete('/{groupId}/members/{memberId}', [SplitGroupController::class, 'removeMember']);
+    });
+
+
+
+
+
+    // Protected Bill Routes
+    Route::middleware('auth:api')->prefix('groups')->group(function () {
+        // Bill management
+        Route::post('/{groupId}/bills', [BillController::class, 'create']);
+        Route::get('/{groupId}/bills', [BillController::class, 'index']);
+        Route::get('/{groupId}/bills/{billId}', [BillController::class, 'show']);
+        Route::put('/{groupId}/bills/{billId}', [BillController::class, 'update']);
+        Route::delete('/{groupId}/bills/{billId}', [BillController::class, 'destroy']);
+
+        // Balance endpoints
+        Route::get('/{groupId}/balance', [BillController::class, 'getGroupBalance']);
+        Route::get('/{groupId}/my-balance', [BillController::class, 'getMyBalance']);
     });
 });
 
