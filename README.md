@@ -11,6 +11,9 @@ Use:
 php artisan route:list
 
 ```
+# 🚀 Postman Collection
+
+https://aa0000-2027.postman.co/workspace/Projects~3e7cc139-3d01-42a0-a2ee-3e8e55502a63/collection/37738875-1936276b-949c-499b-bd0f-8bb14e2f03b4?action=share&creator=37738875&active-environment=37738875-fcc723f9-654e-425e-a5cb-eb2fe173810b
 
 # 🚀 Laravel REST API (Docker Setup)
 
