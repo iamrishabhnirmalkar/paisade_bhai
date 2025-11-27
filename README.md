@@ -1,3 +1,17 @@
+# 🚀 Money Splitwise — Laravel REST API (Docker Setup)
+
+This repository contains the **REST API backend** for the Money Splitwise project.  
+The API runs completely inside **Docker containers**, making setup super smooth and platform-independent.
+
+If you’re a **Laravel developer**, feel free to run locally.  
+If not, Docker handles everything for you. 🙌
+
+Use:
+```bash
+php artisan route:list
+
+```
+
 # 🚀 Laravel REST API (Docker Setup)
 
 This project is a **Laravel REST API** that runs completely inside **Docker containers** for easy setup and local development.
@@ -10,9 +24,7 @@ Follow the commands below step-by-step 👇
 (You can copy-paste all of this directly into your terminal.)
 
 ```bash
-# 1️⃣ Clone the Repository
-git clone <>
-cd <>
+# 1️⃣ Clone the Repository this Repo
 
 # 2️⃣ Copy Environment File and Generate Key
 cp .env.example .env
